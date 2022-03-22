@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+        </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous">
+        </script>
+    <title>covid cases</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;500&family=Rubik&family=Source+Code+Pro:wght@200&family=Ubuntu:wght@300&display=swap');
+        .tabItem{
+            text-decoration: none;
+            color: white;
+        }
+
+        .fontGood{
+            font-family: 'Manrope', sans-serif;
+
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Covide cases tracker</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <br><br><br>
+
+    <div class="container card fontGood">
+
+
+        <p class="h1" id="countryName">Loading</p><br>
+        <div class="row">
+            <div class="col-3 h3">Total confirmed</div>
+            <div class="col-3 h3">Total deaths</div>
+            <div class="col-3 h3">New confirmed</div>
+            <div class="col-3 h3">New deaths</div>
+        </div>
+        <div class="row">
+            <div class="col-3 h3" id="TotalConfirmed">0</div>
+            <div class="col-3 h3" id="TotalDeaths">0</div>
+            <div class="col-3 h3" id="NewConfirmed">0</div>
+            <div class="col-3 h3" id="NewDeaths">0</div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="container col-2" style="margin-top: 2%;">
+
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Abhi nahi chl ra :(" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="">Search</button>
+            </form>
+        </div>
+        
+
+        </div>
+
+
+
+
+
+       
+        
+<br><br><br>
+        <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Country</th>
+            </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+              
+            </tbody>
+          </table>
+    </body>
+
+
+<script>
+    /*
+    let data;
+    
+    async function getCovidcases(){
+        const jsonData = await fetch('https://api.covid19api.com/summary');
+        
+        
+        const jsonFormat = await jsonData.json();
+        return (jsonFormat.Countries);
+        
+    }
+        
+
+    
+    console.log(data);
+    document.write(jsonFormat.Countries[i].Country);
+    document.write("</br>");
+    document.write(jsonFormat.Countries[i].Date.slice(0,10));
+    document.write("</br>");
+    document.write(jsonFormat.Countries[i].NewConfirmed);
+    document.write("</br>");
+    document.write(jsonFormat.Countries[i].NewDeaths);
+    document.write("</br>");
+    document.write(jsonFormat.Countries[i].TotalConfirmed);
+    document.write("</br>");
+    document.write(jsonFormat.Countries[i].TotalDeaths);
+    document.write("</br>");
+    
+    document.write("</br>");
+    */
+
+
+let resData;
+
+
+
+    function getcases() {
+
+
+
+        fetch('https://api.covid19api.com/summary')
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+
+                resData = JSON.stringify(data);
+                tablePop(resData);
+                let Jdata = JSON.parse(resData);
+                document.getElementById("countryName").innerHTML= Jdata.Countries[77].Country;
+                document.getElementById("TotalConfirmed").innerHTML= Jdata.Countries[77].TotalConfirmed;
+                document.getElementById("TotalDeaths").innerHTML= Jdata.Countries[77].TotalDeaths;
+                document.getElementById("NewConfirmed").innerHTML= Jdata.Countries[77].NewConfirmed;
+                document.getElementById("NewDeaths").innerHTML= Jdata.Countries[77].NewDeaths;
+                // let deaths = (data.Countries[i].TotalDeaths);
+                // let cases = (data.Countries[i].TotalConfirmed);
+                // let country = (data.Countries[i].Country);
+                // let date = (data.Countries[i].Date);
+
+            })
+
+                function tablePop(resData){
+
+                    let Jdata = JSON.parse(resData);
+                    for(let i = 1 ; i < 194; i++){
+                    document.getElementById("tbody").innerHTML += " <tr> <th scope=\"row\">" + i + "</th><td><a href=\"#\" onclick=\"Loadcountry(this)\" class=\"tabItem\">"+Jdata.Countries[i].Country+"</a></td></tr>"
+                    }
+                }
+
+                /*
+                document.write("country name:")
+                document.write("</br>");
+                document.write(country)
+                document.write("</br>");
+                document.write("</br>");    
+    
+                document.write(deaths)
+                document.write("</br>");
+                document.write(cases)
+                */
+    }
+
+//   
+
+      getcases();
+//     }
+
+
+    function Loadcountry(thisobj){
+        let CountryName= thisobj.innerHTML
+        document.getElementById("countryName").innerHTML= CountryName;
+        let Jdata = JSON.parse(resData);
+        let i;
+        for(i = 1 ; i < 194; i++){
+            if(Jdata.Countries[i].Country == CountryName){
+                break;
+            }
+        }
+       document.getElementById("TotalConfirmed").innerHTML= Jdata.Countries[i].TotalConfirmed;
+       document.getElementById("TotalDeaths").innerHTML= Jdata.Countries[i].TotalDeaths;
+       document.getElementById("NewConfirmed").innerHTML= Jdata.Countries[i].NewConfirmed;
+       document.getElementById("NewDeaths").innerHTML= Jdata.Countries[i].NewDeaths;
+       console.log(Jdata);
+    }
+
+    
+</script>
+
+
+
+
+</html>
