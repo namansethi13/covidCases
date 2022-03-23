@@ -16,21 +16,50 @@
     <title>covid cases</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;500&family=Rubik&family=Source+Code+Pro:wght@200&family=Ubuntu:wght@300&display=swap');
-        .tabItem{
+
+        * {
+            overflow-x: hidden;
+
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        *::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+       * {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .tabItem {
             text-decoration: none;
             color: white;
         }
 
-        .fontGood{
+        .fontGood {
             font-family: 'Manrope', sans-serif;
 
+        }
+
+        #myInput {
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            width: 100%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
         }
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Covide cases tracker</a>
+        <a class="navbar-brand" href="#">Covid cases tracker</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -39,7 +68,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="./index.html">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
@@ -50,56 +79,70 @@
 
     <br><br><br>
 
-    <div class="container card fontGood">
 
+    <div class="container fontGood">
 
-        <p class="h1" id="countryName">Loading</p><br>
+        <p class="h1" id="countryName">Loading</p>
+        <p class="h1" id="dateName">Loading</p><br>
         <div class="row">
-            <div class="col-3 h3">Total confirmed</div>
-            <div class="col-3 h3">Total deaths</div>
-            <div class="col-3 h3">New confirmed</div>
-            <div class="col-3 h3">New deaths</div>
+            <div class="col-6 h3">Total confirmed</div>
+            <div class="col-6 h3">Total deaths</div>
         </div>
         <div class="row">
-            <div class="col-3 h3" id="TotalConfirmed">0</div>
-            <div class="col-3 h3" id="TotalDeaths">0</div>
-            <div class="col-3 h3" id="NewConfirmed">0</div>
-            <div class="col-3 h3" id="NewDeaths">0</div>
+            <div class="col-6 h3" id="TotalConfirmed">0</div>
+            <div class="col-6 h3" id="TotalDeaths">0</div>
+        </div>
+    </div>
+    <br><br><br>
+    <div class="container fontGood">
+        <div class="row">
+            <div class="col-6 h3">New confirmed</div>
+            <div class="col-6 h3">New deaths</div>
+        </div>
+        <div class="row">
+            <div class="col-6 h3" id="NewConfirmed">0</div>
+            <div class="col-6 h3" id="NewDeaths">0</div>
         </div>
     </div>
 
+    <br><br><br>
+
     <div class="row">
 
-        <div class="container col-2" style="margin-top: 2%;">
+        <div class="col-1">
 
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Abhi nahi chl ra :(" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="">Search</button>
-            </form>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+                viewBox="0 0 16 16">
+                <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
         </div>
-        
-
+        <div class="col-11">
+            <input type="text" id="myInput" onkeyup="searchInTable()" placeholder="Search for country names.."
+                title="Type in a name">
         </div>
 
+    </div>
 
 
 
 
-       
-        
-<br><br><br>
-        <table class="table table-dark">
-            <thead>
-              <tr>
+
+
+
+    <br><br><br>
+    <table class="table table-dark" id="casesTable">
+        <thead>
+            <tr>
                 <th scope="col">#</th>
                 <th scope="col">Country</th>
             </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-              
-            </tbody>
-          </table>
-    </body>
+        </thead>
+        <tbody id="tbody"></tbody>
+
+        </tbody>
+    </table>
+</body>
 
 
 <script>
@@ -115,7 +158,6 @@
         
     }
         
-
     
     console.log(data);
     document.write(jsonFormat.Countries[i].Country);
@@ -135,7 +177,7 @@
     */
 
 
-let resData;
+    let resData;
 
 
 
@@ -152,11 +194,12 @@ let resData;
                 resData = JSON.stringify(data);
                 tablePop(resData);
                 let Jdata = JSON.parse(resData);
-                document.getElementById("countryName").innerHTML= Jdata.Countries[77].Country;
-                document.getElementById("TotalConfirmed").innerHTML= Jdata.Countries[77].TotalConfirmed;
-                document.getElementById("TotalDeaths").innerHTML= Jdata.Countries[77].TotalDeaths;
-                document.getElementById("NewConfirmed").innerHTML= Jdata.Countries[77].NewConfirmed;
-                document.getElementById("NewDeaths").innerHTML= Jdata.Countries[77].NewDeaths;
+                document.getElementById("countryName").innerHTML = Jdata.Countries[77].Country;
+                document.getElementById("dateName").innerHTML = Jdata.Countries[77].Date.slice(0, 10);
+                document.getElementById("TotalConfirmed").innerHTML = Jdata.Countries[77].TotalConfirmed;
+                document.getElementById("TotalDeaths").innerHTML = Jdata.Countries[77].TotalDeaths;
+                document.getElementById("NewConfirmed").innerHTML = Jdata.Countries[77].NewConfirmed;
+                document.getElementById("NewDeaths").innerHTML = Jdata.Countries[77].NewDeaths;
                 // let deaths = (data.Countries[i].TotalDeaths);
                 // let cases = (data.Countries[i].TotalConfirmed);
                 // let country = (data.Countries[i].Country);
@@ -164,51 +207,76 @@ let resData;
 
             })
 
-                function tablePop(resData){
+        function tablePop(resData) {
 
-                    let Jdata = JSON.parse(resData);
-                    for(let i = 1 ; i < 194; i++){
-                    document.getElementById("tbody").innerHTML += " <tr> <th scope=\"row\">" + i + "</th><td><a href=\"#\" onclick=\"Loadcountry(this)\" class=\"tabItem\">"+Jdata.Countries[i].Country+"</a></td></tr>"
-                    }
-                }
+            let Jdata = JSON.parse(resData);
+            for (let i = 1; i < 194; i++) {
+                document.getElementById("tbody").innerHTML += " <tr> <th scope=\"row\">" + i + "</th><td><a href=\"#\" onclick=\"Loadcountry(this)\" class=\"tabItem\">" + Jdata.Countries[i].Country + "</a></td></tr>"
+            }
+        }
 
-                /*
-                document.write("country name:")
-                document.write("</br>");
-                document.write(country)
-                document.write("</br>");
-                document.write("</br>");    
-    
-                document.write(deaths)
-                document.write("</br>");
-                document.write(cases)
-                */
+        /*
+        document.write("country name:")
+        document.write("</br>");
+        document.write(country)
+        document.write("</br>");
+        document.write("</br>");    
+ 
+        document.write(deaths)
+        document.write("</br>");
+        document.write(cases)
+        */
     }
 
-//   
+    //   
 
-      getcases();
-//     }
+    getcases();
+    //     }
 
 
-    function Loadcountry(thisobj){
-        let CountryName= thisobj.innerHTML
-        document.getElementById("countryName").innerHTML= CountryName;
+    function Loadcountry(thisobj) {
+        let CountryName = thisobj.innerHTML
+        document.getElementById("countryName").innerHTML = CountryName;
         let Jdata = JSON.parse(resData);
         let i;
-        for(i = 1 ; i < 194; i++){
-            if(Jdata.Countries[i].Country == CountryName){
+        for (i = 1; i < 194; i++) {
+            if (Jdata.Countries[i].Country == CountryName) {
                 break;
             }
         }
-       document.getElementById("TotalConfirmed").innerHTML= Jdata.Countries[i].TotalConfirmed;
-       document.getElementById("TotalDeaths").innerHTML= Jdata.Countries[i].TotalDeaths;
-       document.getElementById("NewConfirmed").innerHTML= Jdata.Countries[i].NewConfirmed;
-       document.getElementById("NewDeaths").innerHTML= Jdata.Countries[i].NewDeaths;
-       console.log(Jdata);
+        document.getElementById("dateName").innerHTML = Jdata.Countries[i].Date.slice(0, 10);
+        document.getElementById("TotalConfirmed").innerHTML = Jdata.Countries[i].TotalConfirmed;
+        document.getElementById("TotalDeaths").innerHTML = Jdata.Countries[i].TotalDeaths;
+        document.getElementById("NewConfirmed").innerHTML = Jdata.Countries[i].NewConfirmed;
+        document.getElementById("NewDeaths").innerHTML = Jdata.Countries[i].NewDeaths;
+        console.log(Jdata);
     }
 
-    
+
+
+    function searchInTable() {
+
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("casesTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+
 </script>
 
 
